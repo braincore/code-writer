@@ -1,4 +1,9 @@
-# Code Writer
+# Code Writer [![Latest Version]][PyPI] [![Build Status]][Travis]
+
+[Latest Version]: https://img.shields.io/pypi/v/code-writer.svg
+[PyPI]: https://pypi.org/project/code-writer/
+[Build Status]: https://api.travis-ci.com/braincore/code-writer.svg?branch=master
+[Travis]: https://travis-ci.com/braincore/code-writer
 
 A Python 3 library with convenience functions for generating code in any
 language.
