@@ -1,0 +1,6 @@
+[MESSAGES CONTROL]
+disable=C,R,fixme
+enable=useless-suppression
+
+[REPORTS]
+reports=n

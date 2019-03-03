@@ -1,0 +1,11 @@
+/*.egg-info
+/.eggs
+/.idea
+/.mypy_cache
+/.tox
+/build
+/dist
+*~
+*.pyc
+*.pyo
+*.swp
