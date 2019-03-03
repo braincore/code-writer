@@ -5,14 +5,14 @@ README = (Path(__file__).parent / 'README.md').read_text()
 
 setup(
     name='code-writer',
-    version='1.0.0',
+    version='1.0.1',
     description='Library with convenience functions for generating code.',
     long_description=README,
     long_description_content_type='text/markdown',
     author='Ken Elkabany',
     author_email='ken@elkabany.com',
     license='MIT',
-    url='https://www.github.com/kelkabany/code-writer',
+    url='https://www.github.com/braincore/code-writer',
     packages=['code_writer'],
     setup_requires=['pytest-runner'],
     tests_require=['pytest'],
