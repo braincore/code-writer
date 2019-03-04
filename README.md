@@ -73,7 +73,7 @@ if True:
 
 ### Rust if statement
 
-Use `block()` to create an indented block surrounding by curly braces.
+Use `block()` to create an indented block enclosed by curly braces.
 
 ```python
 cw = CodeWriter()
