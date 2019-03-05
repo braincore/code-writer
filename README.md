@@ -18,6 +18,11 @@ You know all of the pains with code generation (coding, build process,
 maintenance), but have decided you have no other choice. This library makes
 generating code a little bit more manageable.
 
+# Alternatives
+
+If your code generation needs are simple, consider using a template language
+such as [Jinja2](https://github.com/pallets/jinja).
+
 # Install
 
 ```bash
