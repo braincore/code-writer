@@ -5,7 +5,7 @@ README = (Path(__file__).parent / 'README.md').read_text()
 
 setup(
     name='code-writer',
-    version='1.0.1',
+    version='1.1.1',
     description='Library with convenience functions for generating code.',
     long_description=README,
     long_description_content_type='text/markdown',
@@ -14,6 +14,8 @@ setup(
     license='MIT',
     url='https://www.github.com/braincore/code-writer',
     packages=['code_writer'],
+    package_data={'code_writer': ['py.typed']},
+    zip_safe=False,
     setup_requires=['pytest-runner'],
     tests_require=['pytest'],
     classifiers=[
