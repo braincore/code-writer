@@ -5,9 +5,9 @@ from typing import Generator, List, Optional, Tuple
 
 
 _split_words_capitalization_re = re.compile(
-    '^[a-z0-9]+|[A-Z][a-z0-9]+|[A-Z]+(?=[A-Z][a-z0-9])|[A-Z]+$'
+    "^[a-z0-9]+|[A-Z][a-z0-9]+|[A-Z]+(?=[A-Z][a-z0-9])|[A-Z]+$"
 )
-_split_words_dashes_re = re.compile('[-_/]+')
+_split_words_dashes_re = re.compile("[-_/]+")
 
 
 def split_words(name: str) -> List[str]:
@@ -34,7 +34,7 @@ def fmt_camel(name: str) -> str:
     words = split_words(name)
     assert len(words) > 0
     first = words.pop(0).lower()
-    return first + ''.join([word.capitalize() for word in words])
+    return first + "".join([word.capitalize() for word in words])
 
 
 def fmt_dashes(name: str) -> str:
@@ -42,7 +42,7 @@ def fmt_dashes(name: str) -> str:
     Converts name to words separated by dashes. Words are identified by
     capitalization, dashes, and underscores.
     """
-    return '-'.join([word.lower() for word in split_words(name)])
+    return "-".join([word.lower() for word in split_words(name)])
 
 
 def fmt_pascal(name: str) -> str:
@@ -50,7 +50,7 @@ def fmt_pascal(name: str) -> str:
     Converts name to pascal case. Words are identified by capitalization,
     dashes, and underscores.
     """
-    return ''.join([word.capitalize() for word in split_words(name)])
+    return "".join([word.capitalize() for word in split_words(name)])
 
 
 def fmt_underscores(name: str) -> str:
@@ -58,7 +58,7 @@ def fmt_underscores(name: str) -> str:
     Converts name to words separated by underscores. Words are identified by
     capitalization, dashes, and underscores.
     """
-    return '_'.join([word.lower() for word in split_words(name)])
+    return "_".join([word.lower() for word in split_words(name)])
 
 
 TDelim = Tuple[Optional[str], Optional[str]]
@@ -67,14 +67,13 @@ TDelim = Tuple[Optional[str], Optional[str]]
 class CodeWriter:
 
     def __init__(
-            self,
-            use_tabs: bool = False,
-            default_dent: Optional[int] = None,
-            default_delim: TDelim = (None, None),
-            default_width: int = 80,
-            ) -> None:
-        assert isinstance(use_tabs, bool),\
-            'Expected bool, got %r' % type(use_tabs)
+        self,
+        use_tabs: bool = False,
+        default_dent: Optional[int] = None,
+        default_delim: TDelim = (None, None),
+        default_width: int = 80,
+    ) -> None:
+        assert isinstance(use_tabs, bool), "Expected bool, got %r" % type(use_tabs)
         self.use_tabs = use_tabs
         if default_dent is None:
             self.default_dent = 1 if use_tabs else 4
@@ -87,9 +86,9 @@ class CodeWriter:
 
     def render(self) -> str:
         if self._buffer:
-            return '\n'.join(self._buffer) + '\n'
+            return "\n".join(self._buffer) + "\n"
         else:
-            return ''
+            return ""
 
     @contextmanager
     def indent(self, dent: Optional[int] = None) -> Generator[None, None, None]:
@@ -97,30 +96,29 @@ class CodeWriter:
         For the duration of the context manager, indentation will be increased
         by the value of dent.
         """
-        assert dent is None or dent >= 0, 'dent must None or >= 0.'
+        assert dent is None or dent >= 0, "dent must None or >= 0."
         delta = self.default_dent if dent is None else dent
         self.cur_indent += delta
         yield
         self.cur_indent -= delta
 
-    def emit(self, s: str = '') -> None:
+    def emit(self, s: str = "") -> None:
         """
         Adds indentation, then the input string, and lastly a newline to the
         output buffer. If s is an empty string (default) then an empty line is
         created with no indentation.
         """
-        assert '\n' not in s, \
-            'String to emit cannot contain newline strings.'
+        assert "\n" not in s, "String to emit cannot contain newline strings."
         if s:
-            self.emit_raw('%s%s\n' % (self.mk_indent(), s))
+            self.emit_raw("%s%s\n" % (self.mk_indent(), s))
         else:
-            self.emit_raw('\n')
+            self.emit_raw("\n")
 
     def mk_indent(self) -> str:
-        return ('\t' if self.use_tabs else ' ') * self.cur_indent
+        return ("\t" if self.use_tabs else " ") * self.cur_indent
 
     def mk_one_indent(self) -> str:
-        return ('\t' if self.use_tabs else ' ') * self.default_dent
+        return ("\t" if self.use_tabs else " ") * self.default_dent
 
     def emit_raw(self, s: str) -> None:
         """
@@ -128,19 +126,18 @@ class CodeWriter:
         newline. It may contain any number of newline characters. No
         indentation is generated.
         """
-        if len(s) > 0 and s[-1] != '\n':
-            raise AssertionError(
-                'Input string to emit_raw must end with a newline.')
+        if len(s) > 0 and s[-1] != "\n":
+            raise AssertionError("Input string to emit_raw must end with a newline.")
         self._buffer.extend(s.splitlines())
 
     @contextmanager
     def block(
         self,
-        before: str = '',
-        after: str = '',
+        before: str = "",
+        after: str = "",
         delim: Optional[TDelim] = None,
         dent: Optional[int] = None,
-        allman: bool = False
+        allman: bool = False,
     ) -> Generator[None, None, None]:
         """
         A context manager that emits configurable lines before and after an
@@ -167,7 +164,7 @@ class CodeWriter:
             dent = self.default_dent
         if before and not allman:
             if delim[0] is not None:
-                self.emit('{} {}'.format(before, delim[0]))
+                self.emit("{} {}".format(before, delim[0]))
             else:
                 self.emit(before)
         else:
@@ -189,22 +186,22 @@ class CodeWriter:
         """
         If the last emit call was an empty line, undo it.
         """
-        if self._buffer and self._buffer[-1] == '':
+        if self._buffer and self._buffer[-1] == "":
             self._buffer.pop()
 
     def trim_trailing_empty_lines(self) -> None:
         """
         Removes all empty lines at the end of the current buffer.
         """
-        while self._buffer and self._buffer[-1] == '':
+        while self._buffer and self._buffer[-1] == "":
             self._buffer.pop()
 
     def emit_wrapped_text(
         self,
         s: str,
-        prefix: str = '',
-        initial_prefix: str = '',
-        subsequent_prefix: str = '',
+        prefix: str = "",
+        initial_prefix: str = "",
+        subsequent_prefix: str = "",
         indent_after_first: bool = False,
         width: Optional[int] = None,
         break_long_words: bool = False,
@@ -247,17 +244,19 @@ class CodeWriter:
                 width=width,
                 break_long_words=break_long_words,
                 break_on_hyphens=break_on_hyphens,
-            ) + '\n')
+            )
+            + "\n"
+        )
 
     def emit_list(
         self,
         items: List[str],
         bracket: Tuple[str, str],
-        before: str = '',
-        after: str = '',
+        before: str = "",
+        after: str = "",
         compact: bool = False,
-        sep: str = ',',
-        skip_last_sep: bool = False
+        sep: str = ",",
+        skip_last_sep: bool = False,
     ) -> None:
         """
         Given a list of items, emits one item per line.
@@ -282,8 +281,9 @@ class CodeWriter:
                 a trailing separator. Ignored when compact is true. Example:
                 Use this to omit the last item's comma in JSON.
         """
-        assert not compact or not self.use_tabs,\
-            'Cannot use compact mode with tabs for indents.'
+        assert (
+            not compact or not self.use_tabs
+        ), "Cannot use compact mode with tabs for indents."
         if len(items) == 0:
             self.emit(before + bracket[0] + bracket[1] + after)
             return
@@ -310,7 +310,7 @@ class CodeWriter:
             if before or bracket[0]:
                 self.emit(before + bracket[0])
             with self.indent():
-                for (i, item) in enumerate(items):
+                for i, item in enumerate(items):
                     if i == len(items) - 1 and skip_last_sep:
                         self.emit(item)
                     else:

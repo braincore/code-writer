@@ -1,0 +1,41 @@
+[project]
+name = "code-writer"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    {name = "Ken Elkabany",email = "ken@elkabany.com"},
+]
+dependencies = []
+requires-python = ">=3.8"
+readme = "README.md"
+license = {text = "MIT"}
+classifiers = [
+    "Topic :: Software Development :: Build Tools",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+[tool.pdm]
+[tool.pdm.dev-dependencies]
+dev = [
+    "black>=24.1.1",
+    "pytest>=8.0.0",
+    "tox-pdm>=0.7.2",
+    "mypy>=1.8.0",
+    "ruff>=0.2.1",
+]
+[tool.pdm.scripts]
+format = "black ."
+lint = "ruff check code_writer test"
+test = "py.test"
+types = "mypy --strict code_writer test"
+
+[tool.pdm.build]
+includes = []
+[build-system]
+requires = ["pdm-pep517>=1.0.0"]
+build-backend = "pdm.pep517.api"
