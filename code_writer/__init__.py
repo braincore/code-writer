@@ -4,10 +4,17 @@ import textwrap
 from typing import Generator, List, Optional, Tuple
 
 
-_split_words_capitalization_re = re.compile(
-    "^[a-z0-9]+|[A-Z][a-z0-9]+|[A-Z]+(?=[A-Z][a-z0-9])|[A-Z]+$"
+# First word: must start with a letter
+_split_words_first_re = re.compile(
+    "[a-z][a-z0-9]*|[A-Z][a-z0-9]*|[A-Z]+(?=[A-Z][a-z0-9])|[A-Z]+$"
 )
-_split_words_dashes_re = re.compile("[-_/]+")
+
+# Subsequent words: can start with letter or number
+_split_words_rest_re = re.compile(
+    "[a-z0-9]+|[A-Z][a-z0-9]+|[A-Z]+(?=[A-Z][a-z0-9])|[A-Z]+$"
+)
+
+_split_words_delim_re = re.compile("[-_/.]+")
 
 
 def split_words(name: str) -> List[str]:
@@ -16,9 +23,13 @@ def split_words(name: str) -> List[str]:
         Example: 'GetFile' -> ['Get', 'File']
         Example: 'get_file' -> ['get', 'file']
     """
-    all_words = []
-    for word in re.split(_split_words_dashes_re, name):
-        vals = _split_words_capitalization_re.findall(word)
+    all_words: List[str] = []
+    for word in re.split(_split_words_delim_re, name):
+        if not word:  # Skip empty strings from split
+            continue
+        # Use first regex for first word, rest regex for subsequent words
+        regex = _split_words_first_re if not all_words else _split_words_rest_re
+        vals = regex.findall(word)
         if vals:
             all_words.extend(vals)
         else:
@@ -29,7 +40,7 @@ def split_words(name: str) -> List[str]:
 def fmt_camel(name: str) -> str:
     """
     Converts name to lower camel case. Words are identified by capitalization,
-    dashes, and underscores.
+    dashes, periods, and underscores.
     """
     words = split_words(name)
     assert len(words) > 0
@@ -40,7 +51,7 @@ def fmt_camel(name: str) -> str:
 def fmt_dashes(name: str) -> str:
     """
     Converts name to words separated by dashes. Words are identified by
-    capitalization, dashes, and underscores.
+    capitalization, dashes, periods, and underscores.
     """
     return "-".join([word.lower() for word in split_words(name)])
 
@@ -48,7 +59,7 @@ def fmt_dashes(name: str) -> str:
 def fmt_pascal(name: str) -> str:
     """
     Converts name to pascal case. Words are identified by capitalization,
-    dashes, and underscores.
+    dashes, periods, and underscores.
     """
     return "".join([word.capitalize() for word in split_words(name)])
 
@@ -56,7 +67,7 @@ def fmt_pascal(name: str) -> str:
 def fmt_underscores(name: str) -> str:
     """
     Converts name to words separated by underscores. Words are identified by
-    capitalization, dashes, and underscores.
+    capitalization, dashes, periods, and underscores.
     """
     return "_".join([word.lower() for word in split_words(name)])
 

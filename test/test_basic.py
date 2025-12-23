@@ -374,11 +374,11 @@ class TestBasic(unittest.TestCase):
         assert ctx.exception.args[0] == "Cannot use compact mode with tabs for indents."
 
     def test_fmt(self) -> None:
-        text = "a-B-HiHo-merryOh_yes_no_XYZ"
-        assert fmt_camel(text) == "aBHiHoMerryOhYesNoXyz"
-        assert fmt_dashes(text) == "a-b-hi-ho-merry-oh-yes-no-xyz"
-        assert fmt_pascal(text) == "ABHiHoMerryOhYesNoXyz"
-        assert fmt_underscores(text) == "a_b_hi_ho_merry_oh_yes_no_xyz"
+        text = "a-B-HiHo-mer.ryOh_yes_no_XYZ"
+        assert fmt_camel(text) == "aBHiHoMerRyOhYesNoXyz"
+        assert fmt_dashes(text) == "a-b-hi-ho-mer-ry-oh-yes-no-xyz"
+        assert fmt_pascal(text) == "ABHiHoMerRyOhYesNoXyz"
+        assert fmt_underscores(text) == "a_b_hi_ho_mer_ry_oh_yes_no_xyz"
 
 
 if __name__ == "__main__":
